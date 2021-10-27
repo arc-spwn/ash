@@ -1,0 +1,22 @@
+extract $
+let path = "~"
+indicator = ">"
+running = true
+
+while running {
+    let input = get_input("[ {} ] {} ".fmt([path,indicator]))
+
+    let args = input.replace(r"[\s\r\n\t]+"," ").trim().split(" ").filter(v => !v.is_empty())
+    if args.length == 0 {continue}
+    let cmd = args.shift().lowercase()
+
+    //if cmd == "quit" {break}
+	switch cmd{
+		case "quit": () {
+			[running] = [false]
+		}(),
+		case "help": () {
+			print("quit - Exits the shell")
+		}(),
+	}
+}
