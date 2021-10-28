@@ -1,5 +1,5 @@
-# ash (A S(pwn)hell) i guess
-A shell written in SPWN (for some reason)
+# ash (A Spwn sHell)
+A shell written in SPWN
 
 # Contributing
 Download SPWN

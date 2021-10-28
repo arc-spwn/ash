@@ -22,10 +22,14 @@ while running {
 			print("cat - Displays contents of a file. E.g. `cat spwn.spwn`")
 		}(),
 		case "file": () {
-			writefile(args[0], args[0])
+			if args.length >= 1 {
+				writefile(args[0], args[0])
+			}
 		}(),
 		case "cat": () {
-			print(readfile(args[0]))
+			if args.length >= 1 {
+				print(readfile(args[0]))
+			}
 		}(),
 	}
 }
