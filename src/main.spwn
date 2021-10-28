@@ -17,6 +17,11 @@ while running {
 		}(),
 		case "help": () {
 			print("quit - Exits the shell")
+			print("help - Displays this list")
+			print("file - Creates a file. E.g. `file spwn.spwn`")
+		}(),
+		case "file": () {
+			writefile(args[0], args[0])
 		}(),
 	}
 }
