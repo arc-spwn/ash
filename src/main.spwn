@@ -16,12 +16,16 @@ while running {
 			[running] = [false]
 		}(),
 		case "help": () {
-			print("quit - Exits the shell")
-			print("help - Displays this list")
+			print("quit - Exits the shell.")
+			print("help - Displays this list.")
 			print("file - Creates a file. E.g. `file spwn.spwn`")
+			print("cat - Displays contents of a file. E.g. `cat spwn.spwn`")
 		}(),
 		case "file": () {
 			writefile(args[0], args[0])
+		}(),
+		case "cat": () {
+			print(readfile(args[0]))
 		}(),
 	}
 }
