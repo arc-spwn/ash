@@ -57,5 +57,8 @@ while running {
 				curFile = 0
 			}
 		}(),
+		else: () {
+			print("Command not found")
+		}(),
 	}
 }
