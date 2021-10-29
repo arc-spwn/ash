@@ -1,7 +1,7 @@
 extract $
 let path = "~"
-indicator = ">"
-running = true
+let indicator = ">"
+let running = true
 
 while running {
     let input = get_input("[ {} ] {} ".fmt([path,indicator]))
@@ -23,12 +23,19 @@ while running {
 		}(),
 		case "file": () {
 			if args.length >= 1 {
-				writefile(args[0], args[0])
+				writefile(args[0], args[0] )
 			}
 		}(),
 		case "cat": () {
+			let curFile = 0
 			if args.length >= 1 {
-				print(readfile(args[0]))
+				while curFile < args.length{
+					print(readfile(args[curFile]))
+					curFile++
+				}
+				curFile = 0
+				
+				//print(readfile(args[1]))
 			}
 		}(),
 	}
