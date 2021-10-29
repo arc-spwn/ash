@@ -18,20 +18,31 @@ while running {
 		case "help": () {
 			print("quit - Exits the shell.")
 			print("help - Displays this list.")
-			print("echo - Appends contents to the end of the file.`")
+			print("echo - Someone please document this for me`")
 			print("cat - Displays contents of a file. E.g. `cat spwn.spwn`")
 		}(),
 		case "echo": () {
-			let curWFile = 0
+			let curWFile = 1
 			let fileCont
 			let resCont 
 			if args.length >= 1 {
-				// idk how to make this work
-				while curWFile < args.length{
-					//ty specky but it still doesnt quite work
-					content = $.readfile(args[0])
-					$.writefile(args[0], content + args[curWFile])
-					curWFile++
+
+				if args[0] == ">"{
+					while curWFile < args.length{
+						//ty specky but it still doesnt quite work
+						content = $.readfile(args[1])
+						$.writefile(args[1], content + args[curWFile])
+						curWFile++
+					}
+				}
+				else{
+					let curW = 0
+					if args.length >= 1 {
+						while curW < args.length{
+							print(args[curW])
+							curW++
+						}
+					}
 				}
 				// writefile(args[0], args[0] )
 			}
