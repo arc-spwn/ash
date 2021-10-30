@@ -1,5 +1,8 @@
 extract $
-cat = (){
+
+cat = (context){
+	extract context
+
     let curRFile = 0
 	if args.length >= 1 {
 	    while curFile < args.length{
@@ -10,4 +13,8 @@ cat = (){
     }
 }
 
-return cat
+return @command::new(
+	name = 'cat',
+	description = 'Displays contents of a file.',
+	call = cat,
+)

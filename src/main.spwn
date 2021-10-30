@@ -1,5 +1,7 @@
 extract $
 
+let commands = import "commands.spwn"
+
 let path = "~"
 let indicator = ">"
 let running = true
@@ -11,54 +13,30 @@ while running {
     if args.length == 0 {continue}
     let cmd = args.shift().lowercase()
 
-    //if cmd == "quit" {break}
-	switch cmd{
-		case "quit": () {
-			[running] = [false]
-		}(),
-		case "help": () {
-			print("quit - Exits the shell.")
-			print("help - Displays this list.")
-			print("echo - Display a string on the terminal or append content to the end of the file using the > sign.")
-			print("cat - Displays contents of a file.")
-		}(),
-		case "echo": () {
-			let curWFile = 1
-			let fileCont
-			let resCont 
-			if args.length >= 1 {
+	if !(commands has cmd) {
+		print("Command not found: {}".fmt(cmd))
+		continue
+	}
 
-				if args[0] == ">"{
-					while curWFile < args.length{
-						//ty specky but it still doesnt quite work
-						content = $.readfile(args[1])
-						$.writefile(args[1], content + args[curWFile])
-						curWFile++
-					}
-				}
-				else{
-					let curW = 0
-					if args.length >= 1 {
-						while curW < args.length{
-							print(args[curW])
-							curW++
-						}
-					}
-				}
-			}
-		}(),
-		case "cat": () {
-			let curRFile = 0
-			if args.length >= 1 {
-				while curFile < args.length{
-					print(readfile(args[curRFile]))
-					curRFile++
-				}
-				curFile = 0
-			}
-		}(),
-		else: () {
-			print("Command not found: " + cmd)
+	context = {
+		cmd,
+		args,
+		path,
+		commands,
+	}
+
+	macro = commands.get_macro(cmd)
+
+	parameters = (macro as @string).split("(")[1].split(")")[0].split(",").map(p=>p.split(':')[0]).filter(p=>p.length>0)
+
+	signal = switch parameters.length {
+		case 0: (()=>macro())(),
+		case 1: (()=>macro(context))(),
+	}
+
+	switch signal {
+		case 'quit': (){
+			running = false
 		}(),
 	}
 }

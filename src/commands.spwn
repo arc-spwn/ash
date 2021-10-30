@@ -1,0 +1,72 @@
+extract $
+
+type @command
+impl @command {
+    new: (
+        name: @string | [@string],
+        description: @string = "Description not provided",
+        call: @macro,
+    ){
+        let name = switch name {
+            @string: [name],
+            else: name,
+        }
+
+        return @command::{
+            name,
+            description,
+            call,
+        }
+    },
+}
+
+type @command_handler
+impl @command_handler {
+    new: (){
+        return @command_handler::{
+            keys: {},
+            commands: {}
+        }
+    },
+    add: (self, command: @command){
+        if command.name.length == 0 {return}
+        for name in command.name {
+            self.keys.set(name, command.name[0])
+        }
+        self.commands.set(command.name[0], command)
+    },
+    get: (self, key: @string){
+        return self.commands.get(self.get_key(key))
+    },
+    get_key: (self, key: @string){
+        return self.keys.get(key)
+    },
+    get_macro: (self, key: @string){
+        return self.get(key).call
+    },
+    _has_: (self, key: @string){
+        return self.keys has key
+    },
+}
+
+let commands = @command_handler::new()
+
+// can be removed once the "import(variable)" syntax will be implemented
+specky_import = (module: @string){
+    writefile("./src/eval.spwn", 'return import "functions/{}"'.fmt(module))
+    return import "eval.spwn"
+}
+
+files = [
+    'cat.spwn',
+    'echo.spwn',
+    'help.spwn',
+    'quit.spwn'
+]
+
+for file in files {
+    command = specky_import(file)
+    commands.add(command)
+}
+
+return commands

@@ -1,0 +1,11 @@
+extract $
+quit = (context){
+    extract context
+    return "quit"
+}
+
+return @command::new(
+	name = 'quit',
+    description = 'Exits the shell.',
+	call = quit,
+)

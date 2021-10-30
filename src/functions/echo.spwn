@@ -1,5 +1,8 @@
-extract $ 
-echo = (){
+extract $
+
+echo = (context){
+	extract context
+
     let curWFile = 1
 	let fileCont
 	let resCont 
@@ -25,4 +28,8 @@ echo = (){
 	}
 }
 
-return echo
+return @command::new(
+	name = 'echo',
+	description = 'Display a string on the terminal or append content to the end of the file using the > sign.',
+	call = echo,
+)

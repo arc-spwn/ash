@@ -1,9 +1,34 @@
 extract $
-help = (){
-    print("quit - Exits the shell.")
-    print("help - Displays this list.")
-    print("echo - Display a string on the terminal or append content to the end of the file using the > sign.")
-    print("cat - Displays contents of a file.")
+help = (context){
+    extract context
+
+    switch args.length {
+        case 0: (){
+            for object in commands.commands {
+                [ key, command ] = object
+                print("{} - {}".fmt([key,command.description]))
+            }
+        }(),
+        else: (){
+            if commands has args[0] {
+                command = commands.get(args[0])
+                print(
+                    "Name{}: {}\nDescription: {}".fmt(
+                        [
+                            's' if args.length > 1 else '', args,
+                            command.description,
+                        ]
+                    )
+                )
+            } else {
+                print("Command not found")
+            }
+        }(),
+    }
 }
 
-return help
+return @command::new(
+	name = 'help',
+    description = 'Displays this list.',
+	call = help,
+)
