@@ -53,7 +53,7 @@ let commands = @command_handler::new()
 
 // can be removed once the "import(variable)" syntax will be implemented
 specky_import = (module: @string){
-    writefile("./src/import.spwn", 'return import "functions/{}"'.fmt(module))
+    writefile("./import.spwn", 'return import "functions/{}"'.fmt(module))
     return import "import.spwn"
 }
 
