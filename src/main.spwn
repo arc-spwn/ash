@@ -58,7 +58,7 @@ while running {
 			}
 		}(),
 		else: () {
-			print("Command not found")
+			print("Command not found: " + cmd)
 		}(),
 	}
 }
