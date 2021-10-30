@@ -12,10 +12,12 @@ help = (context){
         else: (){
             if commands has args[0] {
                 command = commands.get(args[0])
+                multiArgs = args.length > 1
                 print(
                     "Name{}: {}\nDescription: {}".fmt(
                         [
-                            's' if args.length > 1 else '', args,
+                            's' if multiArgs else '',
+                            args if multiArgs else $.display(args[0]),
                             command.description,
                         ]
                     )
