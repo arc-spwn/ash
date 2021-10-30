@@ -1,0 +1,13 @@
+extract $
+cat = (){
+    let curRFile = 0
+	if args.length >= 1 {
+	    while curFile < args.length{
+		print(readfile(args[curRFile]))
+		curRFile++
+	}
+	curFile = 0
+    }
+}
+
+return cat

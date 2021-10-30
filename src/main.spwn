@@ -1,4 +1,5 @@
 extract $
+
 let path = "~"
 let indicator = ">"
 let running = true
@@ -44,7 +45,6 @@ while running {
 						}
 					}
 				}
-				// writefile(args[0], args[0] )
 			}
 		}(),
 		case "cat": () {

@@ -1,0 +1,28 @@
+extract $ 
+echo = (){
+    let curWFile = 1
+	let fileCont
+	let resCont 
+	if args.length >= 1 {
+
+		if args[0] == ">"{
+			while curWFile < args.length{
+				//ty specky but it still doesnt quite work
+				content = $.readfile(args[1])
+				$.writefile(args[1], content + args[curWFile])
+				curWFile++
+			}
+		}
+		else{
+			let curW = 0
+			if args.length >= 1 {
+				while curW < args.length{
+					print(args[curW])
+					curW++
+				}
+			}
+		}
+	}
+}
+
+return echo

@@ -1,0 +1,9 @@
+extract $
+help = (){
+    print("quit - Exits the shell.")
+    print("help - Displays this list.")
+    print("echo - Display a string on the terminal or append content to the end of the file using the > sign.")
+    print("cat - Displays contents of a file.")
+}
+
+return help
