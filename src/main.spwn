@@ -6,6 +6,19 @@ let path = "~"
 let indicator = ">"
 let running = true
 
+output_convert = (output){
+	signal = switch output {
+		@string: output,
+		@array: array[0] if array.length > 0 else null,
+		else: null,
+	}
+	content = switch output {
+		@array: array[1] if array.length > 1 else null,
+		else: null,
+	}
+	return [ signal, content ]
+}
+
 while running {
     let input = get_input("[ {} ] {} ".fmt([path,indicator]))
 
@@ -29,14 +42,19 @@ while running {
 
 	parameters = (macro as @string).split("(")[1].split(")")[0].split(",").map(p=>p.split(':')[0]).filter(p=>p.length>0)
 
-	signal = switch parameters.length {
+	output = switch parameters.length {
 		case 0: (()=>macro())(),
 		case 1: (()=>macro(context))(),
 	}
 
+	[ signal, content ] = output_convert(output)
+
 	switch signal {
 		case 'quit': (){
 			running = false
+		}(),
+		case 'update_path': (){
+			path = content
 		}(),
 	}
 }

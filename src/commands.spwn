@@ -61,7 +61,7 @@ files = [
     'cat.spwn',
     'echo.spwn',
     'help.spwn',
-    'quit.spwn'
+    'quit.spwn',
 ]
 
 for file in files {
