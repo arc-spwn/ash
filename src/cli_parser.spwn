@@ -1,0 +1,29 @@
+parser = (input: @string){
+    if input.replace(r"[\r\n]",'').length == 0 { // can't wait for trim to work properly
+        return [false,null,null,null] // aaaaaaaaaaaaaaaaaa
+    }
+
+    let content = input.replace(r"\r",'').trim()
+
+    let args = content.replace(r"[\s\r\n\t]+"," ").trim().split(" ").filter(v => !v.is_empty())
+
+    valid = args.length > 0
+
+    let cmd = args.shift().lowercase() if valid else null
+
+    if valid {
+        content = content + "  " // substr gae :/
+        content = content.substr(cmd.length, content.length-1).trim()
+    }
+
+    $.print([cmd, content])
+
+    return [ // hopefully v0.8 will come out soon
+        valid,
+        cmd,
+        args,
+        content,
+    ]
+}
+
+return parser

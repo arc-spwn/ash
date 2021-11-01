@@ -1,19 +1,22 @@
 extract $
 
 let commands = import "commands.spwn"
+let cli_parser = import "cli_parser.spwn"
 
 let path = "~"
 let indicator = ">"
 let running = true
 
+array_get = (array: @array, index: @number, default = null) => array[index] if array.length > index else default
+
 output_convert = (output){
 	signal = switch output {
 		@string: output,
-		@array: array[0] if array.length > 0 else null,
+		@array: array_get(array, 0)
 		else: null,
 	}
 	content = switch output {
-		@array: array[1] if array.length > 1 else null,
+		@array: array_get(array, 0),
 		else: null,
 	}
 	return [ signal, content ]
@@ -21,10 +24,15 @@ output_convert = (output){
 
 while running {
     let input = get_input("[ {} ] {} ".fmt([path,indicator]))
+    
+    let [
+        valid,
+        cmd,
+        args,
+        content,
+    ] = cli_parser(input)
 
-    let args = input.replace(r"[\s\r\n\t]+"," ").trim().split(" ").filter(v => !v.is_empty())
-    if args.length == 0 {continue}
-    let cmd = args.shift().lowercase()
+    if !valid {continue}
 
 	if !(commands has cmd) {
 		print("Command not found: {}".fmt(cmd))
@@ -34,6 +42,7 @@ while running {
 	context = {
 		cmd,
 		args,
+        content,
 		path,
 		commands,
 	}
