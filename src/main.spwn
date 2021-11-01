@@ -47,14 +47,14 @@ while running {
 		case 1: (()=>macro(context))(),
 	}
 
-	[ signal, content ] = output_convert(output)
+	[ signal, data ] = output_convert(output)
 
 	switch signal {
 		case 'quit': (){
 			running = false
 		}(),
 		case 'update_path': (){
-			path = content
+			path = data
 		}(),
 	}
 }
