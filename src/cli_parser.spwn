@@ -16,8 +16,6 @@ parser = (input: @string){
         content = content.substr(cmd.length, content.length-1).trim()
     }
 
-    $.print([cmd, content])
-
     return [ // hopefully v0.8 will come out soon
         valid,
         cmd,
