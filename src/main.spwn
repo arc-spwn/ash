@@ -30,6 +30,7 @@ while running {
         cmd,
         args,
         content,
+		send,
     ] = cli_parser(input)
 
     if !valid {continue}
@@ -39,12 +40,28 @@ while running {
 		continue
 	}
 
-	context = {
+	file_print = (dump){
+		to_dump = switch dump {
+			@string: dump,
+			else: display(dump),
+		} + '\n'
+
+		for file in send {
+			old_file_content = $.readfile(file)
+			$.writefile(file, old_file_content + to_dump)
+		}
+	}
+
+	let context = {
 		cmd,
 		args,
         content,
 		path,
 		commands,
+	}
+
+	if send.length > 0 {
+		context.set("print",file_print)
 	}
 
 	macro = commands.get_macro(cmd)

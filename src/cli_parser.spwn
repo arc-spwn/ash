@@ -1,19 +1,31 @@
+join = (array: @array, joiner: @string){ // can be removed when v0.8 is out
+    let out = ''
+    for i in ..array.length {
+        if i > 0 {out += joiner}
+        out += @string(array[i])
+    }
+    return out
+}
+
 parser = (input: @string){
     if input.replace(r"[\r\n]",'').length == 0 { // can't wait for trim to work properly
-        return [false,null,null,null] // aaaaaaaaaaaaaaaaaa
+        return [false,null,null,null,null] // aaaaaaaaaaaaaaaaaa
     }
 
-    let content = input.replace(r"\r",'').trim()
+    let full_content = input.replace(r"\r",'').trim()
+    let full_send = full_content.split('>')
+    let content = full_send.shift()
 
-    let args = content.replace(r"[\s\r\n\t]+"," ").trim().split(" ").filter(v => !v.is_empty())
+    let args = args_parser(content)
+    let send = args_parser(join(full_send,'>'))
 
     valid = args.length > 0
 
     let cmd = args.shift().lowercase() if valid else null
 
     if valid {
-        content = content + "  " // substr gae :/
-        content = content.substr(cmd.length, content.length-1).trim()
+        content = content + " " // substr gae :/
+        content = content.substr(cmd.length, content.length).trim()
     }
 
     return [ // hopefully v0.8 will come out soon
@@ -21,6 +33,7 @@ parser = (input: @string){
         cmd,
         args,
         content,
+        send,
     ]
 }
 
