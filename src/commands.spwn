@@ -63,6 +63,7 @@ files = [
     'help.spwn',
     'quit.spwn',
     'touch.spwn',
+    'ping.spwn',
 ]
 
 for file in files {

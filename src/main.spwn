@@ -40,7 +40,7 @@ while running {
 		continue
 	}
 
-	file_print = (dump){
+	file_print = (dump=""){
 		to_dump = switch dump {
 			@string: dump,
 			else: display(dump),

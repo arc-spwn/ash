@@ -1,0 +1,25 @@
+extract $
+
+ping = (context){
+    extract context
+
+    for arg in args {
+        for i in ..4 {
+            start = time()
+            output = @http::get(arg)
+            end = time()
+
+            print(
+                "Response from {}\n".fmt(arg) + // can't wait for @array::join
+                "- duration: {}ms\n".fmt(floor((end-start)*1000)) +
+                "- content: {} bytes".fmt(display(output).length)
+            )
+        }
+    }
+}
+
+return @command::new(
+    name = 'ping',
+    description = 'Pings a website.',
+    call = ping,
+)
