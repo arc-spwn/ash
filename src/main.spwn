@@ -1,5 +1,7 @@
 extract $
 
+extract import "utils.spwn"
+
 let commands = import "commands.spwn"
 let cli_parser = import "cli_parser.spwn"
 

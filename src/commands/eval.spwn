@@ -1,0 +1,14 @@
+extract $
+utils = import "../utils.spwn"
+
+eval = (context){
+	extract context
+
+	print(utils.eval(content))
+}
+
+return @command::new(
+	name = 'eval',
+	description = 'Evaluates SPWN code.',
+	call = eval,
+)
