@@ -1,4 +1,5 @@
 extract $
+extract import "utils.spwn"
 
 type @command
 impl @command {
@@ -50,12 +51,6 @@ impl @command_handler {
 }
 
 let commands = @command_handler::new()
-
-// can be removed once the "import(variable)" syntax will be implemented
-specky_import = (module: @string){
-    writefile("import.spwn", 'return import "commands/{}"'.fmt(module))
-    return import "import.spwn"
-}
 
 files = [
     'cat.spwn',
