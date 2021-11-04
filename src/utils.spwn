@@ -1,8 +1,8 @@
 extract $
 
 eval = (code: @string){
-    writefile("eval.spwn", code)
-    return import "eval.spwn"
+    writefile("specky_eval.spwn", code)
+    return import "specky_eval.spwn"
 }
 
 // can be removed once the "import(variable)" syntax will be implemented
