@@ -1,0 +1,15 @@
+extract $
+
+touch = (context){
+    extract context
+
+    for arg in args {
+        writefile(arg,'')
+    }
+}
+
+return @command::new(
+    name = 'touch',
+    description = 'Creates a new empty file.',
+    call = touch,
+)

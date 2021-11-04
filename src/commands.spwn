@@ -62,6 +62,7 @@ files = [
     'echo.spwn',
     'help.spwn',
     'quit.spwn',
+    'touch.spwn',
 ]
 
 for file in files {
