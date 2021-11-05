@@ -43,24 +43,10 @@ while running {
 	}
 
 	file_print = (dump=""){
-		appendString = ""
-		textLength = dump.split("").length
-		isFile = ($.substr(dump, textLength - 4, textLength) == ".txt")
-
-		if isFile {
-			[appendString] = [$.readfile(dump)]
-		} else if !isFile && dump.type == @string {
-			[appendString] = [dump]
-		} else {
-			[appendString] = [display(dump)]
-		}
-
-		to_dump = appendString + '\n'
-		
-		//to_dump = switch dump {
-		//	@string: dump,
-		//	else: display(dump),
-		//} + '\n'
+		to_dump = switch dump {
+			@string: dump,
+			else: display(dump),
+		} + '\n'
 
 		for file in send {
 			old_file_content = $.readfile(file)
