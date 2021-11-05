@@ -8,4 +8,4 @@ To run the shell:
 
 - Install [SPWN](https://github.com/Spu7Nix/SPWN-language/releases)
 - CD to the /src/ directory
-- Run `spwn b main.spwn --no-level --allow writefile --allow readfile --allow http_requests` from your favourite terminal
+- Run `spwn b main.spwn --no-level --allow writefile --allow readfile --allow http_request` from your favourite terminal
