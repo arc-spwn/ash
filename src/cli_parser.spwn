@@ -27,7 +27,7 @@ parser = (input: @string){
 
     let full_content = input.replace(r"\r",'').trim()
     let full_send = full_content.split('>')
-    let content = full_send.shift()
+    let content = full_send.shift().trim()
 
     let args = args_parser(content)
     let send = args_parser(join(full_send,'>'))
