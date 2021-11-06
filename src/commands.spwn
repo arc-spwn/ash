@@ -60,6 +60,7 @@ files = [
     'touch.spwn',
     'ping.spwn',
     'eval.spwn',
+    'banner.spwn',
 ]
 
 for file in files {
