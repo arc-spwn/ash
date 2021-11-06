@@ -13,4 +13,5 @@ specky_import = (module: @string){
 return {
     eval,
     specky_import,
+    start_time: $.time(),
 }

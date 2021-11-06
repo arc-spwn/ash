@@ -1,0 +1,75 @@
+extract $
+
+extract import "../utils.spwn"
+
+arc_logo = "
+@@@&@&@@&@@&@&@@&@@&@&@@&@@&@&@@&@@&@&@@
+@@@@&@@@@&@@@@@&@@@@@@@@@@@@@@@@@@@@@@@&
+@@@@@@@@@@@@@@@@@@@@@@@@&@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@&@@@@@@@&@@@@@@@&@@@@@@@&@@@@@@@&@@@
+&@@&@&@@&@@&@///////(&@@&#((@&@@&@@&@&@@
+@&@@&@@&@&@@///&@&@&(((((((@&@@&@&@@&@@&
+@@@@@@@@@@@@@@@@@@@&@@@@&@@@@&@@@@@&@@@@
+@@@@&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+&@@@@@@@&@@@@@@@&@@@@@@@&@@@@@@@&@@@@@@@
+@&@@&@@&@&@@&@@&@&@@&@@&@&@@&@@&@&@@&@@&
+"
+
+neofetch = (context){
+    extract context
+
+    let logo_done = false
+    let stats_done = false
+
+    let logo = arc_logo.split("\n")
+    logo.shift() // remove first newline
+
+    let stats = [
+        "root@arc",
+        "",
+        // "OS: Arc {}",
+        // "Kernel: {}",
+        "Uptime: {} seconds".fmt($.time() - start_time),
+        "Packages: {} (ash)".fmt([commands.commands.values().length]),
+        // "Shell: {}",
+        // "Terminal: {}",
+        // "CPU: {}",
+        // "GPU: {}",
+        // "Memory: {}",
+    ]
+
+    let i = 0;
+
+    while !logo_done || !stats_done {
+        let strip = ""
+        if !logo_done { strip += logo[i] }
+        while strip.length < 40 + 3 { strip += " " }
+        if !stats_done {
+            if stats[i].length == 0 && i > 0 {
+                strip += stats[i-1].replace(r".","-")
+            } else {
+                strip += stats[i]
+            }
+        }
+        print(strip)
+        if i >= logo.length-1 {
+            logo_done = true
+        }
+        if i >= stats.length-1 {
+            stats_done = true
+        }
+        i++
+    }
+}
+
+return @command::new(
+	name = 'neofetch',
+    description = 'Fetches the system informations.',
+	call = neofetch,
+)

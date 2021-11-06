@@ -61,6 +61,7 @@ files = [
     'ping.spwn',
     'eval.spwn',
     'banner.spwn',
+    'neofetch.spwn',
 ]
 
 for file in files {
