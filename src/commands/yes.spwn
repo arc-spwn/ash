@@ -1,0 +1,13 @@
+extract $
+
+yes = (context){
+    extract context
+    text = content if content.length > 0 else 'y'
+    while true { print(text) }
+}
+
+return @command::new(
+	name = 'yes',
+    description = 'Yes.',
+	call = yes,
+)
