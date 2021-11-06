@@ -1,0 +1,30 @@
+extract $
+
+factor = (context){
+    extract context
+    for arg in args {
+        if !arg.isdigit() { continue }
+        let original = arg as @number
+        if original % 1 != 0 { continue }
+        let number = original
+        let factors = []
+        let factor = 1
+        while number > 1 {
+            factor++
+            while number % factor == 0 {
+                number /= factor
+                factors.push(factor)
+            }
+        }
+        print("{}: {}".fmt([
+            original,
+            " ".join(factors) if factors.length > 0 else 1
+        ]))
+    }
+}
+
+return @command::new(
+	name = 'factor',
+    description = 'Gives the factors of a number.',
+	call = factor,
+)

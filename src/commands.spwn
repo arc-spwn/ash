@@ -62,6 +62,7 @@ files = [
     'eval.spwn',
     'banner.spwn',
     'neofetch.spwn',
+    'factor.spwn',
 ]
 
 for file in files {
