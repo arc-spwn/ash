@@ -328,7 +328,7 @@ banner = (context){
                 }
                 unpush = !unpush
             }
-            for i in ..stripes.length {
+            for i in 0..stripes.length {
                 let sunpush = false
                 while stripes[i].length < 8 {
                     stripes[i] = " " + stripes[i] if sunpush else stripes[i] + " "

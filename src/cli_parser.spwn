@@ -13,7 +13,7 @@ args_parser = (input: @string){
 
 join = (array: @array, joiner: @string){ // can be removed when v0.8 is out
     let out = ''
-    for i in ..array.length {
+    for i in 0..array.length {
         if i > 0 {out += joiner}
         out += @string(array[i])
     }
