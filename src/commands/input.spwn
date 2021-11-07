@@ -1,0 +1,11 @@
+extract $;
+
+input = (context){
+    $.print($.get_input(">"))
+};
+
+return @command::new(
+	name = 'input',
+	description = 'prints back whatever the input was',
+	call = input,
+)

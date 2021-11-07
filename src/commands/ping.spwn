@@ -4,7 +4,7 @@ ping = (context){
     extract context
 
     for arg in args {
-        for i in ..4 {
+        for i in 0..4 {
             start = time()
             output = @http::get(arg)
             end = time()
