@@ -60,9 +60,6 @@ files = [
     'touch.spwn',
     'ping.spwn',
     'eval.spwn',
-    'banner.spwn',
-    'neofetch.spwn',
-    'factor.spwn',
     'yes.spwn',
 ]
 
