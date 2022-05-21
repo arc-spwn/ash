@@ -1,0 +1,182 @@
+run = (action, input, i2) {
+if ($.fileexists("libraries") == false) {
+	path("./libraries").mkdir()
+}
+
+websocket = (wsurl, msgs) {
+    url = "https://http-ws.seven7four4.repl.co/ws"
+	let body
+	if "timeout" in msgs && "endAfter" in msgs {
+			body = '{"url":"{}","messages":"{}", "timeout":"{}", "endAfter":"{}"}'.fmt([wsurl, msgs.messages, msgs.timeout, msgs.endAfter])
+	}
+	else if "timeout" in msgs && !("endAfter" in msgs) {
+			body = '{"url":"{}","messages":"{}", "timeout":"{}"}'.fmt([wsurl, msgs.messages, msgs.timeout])
+	} 
+	else if !("timeout" in msgs) && !("endAfter" in msgs) {
+			body = '{"url":"{}","messages":"{}"}'.fmt([wsurl, msgs.messages])
+	}
+    method = "post"
+    headers = {
+        "Content-Type": "application/json",
+    }
+    return $.http_request(method, url, headers, body).text
+}
+
+MarebolDB = (id) {
+	let funcs = {
+		get: (v) {
+			let json = websocket("wss://" + id + ".id.repl.co/api", {
+			messages: ["/get " + v],
+			timeout: 200
+			})
+			return json
+		},
+		set: (v1, v2) {
+			let json = websocket("wss://" + id + ".id.repl.co/api", {
+			messages: ["/set " + v1 + " " + v2],
+			timeout: 200
+			})
+			return json
+		},
+		delete: (v) {
+			let json = websocket("wss://" + id + ".id.repl.co/api", {
+			messages: ["/delete " + v],
+			timeout: 200
+			})
+			return json
+		},
+		listall: (){
+			let json = websocket("wss://" + id + ".id.repl.co/api", {
+			messages: ["/listall"],
+			timeout: 200
+			})
+			return json
+		}
+	}
+	return funcs
+}
+
+let db = MarebolDB("2e4ba202-d450-4919-a54d-15ca24429a1f")
+
+
+get_package = (package) {
+  decode = (package) {
+      url = "https://spghtt-decode.seven7four4.repl.co"
+      body = '{"package":"{}"}'.fmt([package.trim("\n")])
+      method = "post"
+      headers = {
+          "Content-Type": "application/json",
+      }
+      return $.http_request(method, url, headers, body).text
+  }
+  let array = decode(db.get(package))
+  let new_a = []
+  $.writefile("temp_.txt", '{"array": {}}'.fmt([array]))
+  let json = $.readfile("temp_.txt", "json").array
+  path("temp_.txt").delete()
+  if (!$.fileexists("libraries/" + package)) {
+  path("libraries/" + package).mkdir()
+  }
+  for entry in json {
+	if (entry != "") {
+	new_a.push(entry)
+	}
+  }
+  json = new_a
+  json.map(x => $.writefile("libraries/" + package + "/" + x.split("|")[0], x.split("|")[1]))  
+}
+
+let command = action
+
+let package_exists = (package) {
+	return db.get(package) != ""
+}
+
+let get_password = (package) {
+	return db.get(package + "_pass")
+}
+
+let password_exists = (package) {
+	return db.get(package + "_pass") != ""
+}
+
+match command {
+  =="install\r": (){
+    let package = input
+		if (package_exists(package.trim("\r"))) {
+			if ($.fileexists("libraries") == false) {
+				path("./libraries").mkdir()
+			}
+		get_package(package.trim("\r"))
+	} else {
+	$.print("Package does not exist!")
+	}
+  }(),
+  
+  =="uninstall\r": (){
+	let package = input
+	if ($.fileexists("libraries/" + package.trim("\r"))) {
+		path("libraries/" + package.trim("\r")).rmdir(true)
+	} else {
+	$.print("Package not installed!")
+	}
+  }(),
+  
+  =="publish\r": (){
+		package = input
+		pname = i2
+		if (password_exists(package.trim("\r"))) {
+				let pass = $.get_input("What should the password be? ")
+				db.set(package.trim("\r") + "_pass", pass.trim("\r"))
+					let enc = "";
+					package2 = package.trim("\r")
+					for file in $.readdir(package2) {
+						let encoded = $.b64encode(file + "|" + path(package2 + "/" + file).read())
+						enc += encoded + "|"
+					}
+					enc = $.b64encode(enc);
+					db.set(package2, enc)
+		} else {
+				let pass = get_password(package.trim("\r"))
+				let guess = $.get_input("What is the password of this package? (this package is already published) ") 
+				if (guess.trim("\r") == pass) {
+					let enc = "";
+					package2 = package.trim("\r")
+					for file in $.readdir(package2) {
+						let encoded = $.b64encode(file + "|" + path(package2 + "/" + file).read())
+						enc += encoded + "|"
+					}
+					enc = $.b64encode(enc);
+					db.set(package2, enc)
+				} else {
+				$.print("Wrong password!")
+				}
+		}
+  }(),
+   =="unpublish\r": (){
+		let package = input
+		package = package.trim("\r")
+		if (package_exists(package)) {
+			let guess = $.get_input("For security, enter the password you made for this package: ")
+			guess = guess.trim("\r")
+			let pass = get_password(package.trim("\r"))
+				if (pass == guess) {
+					db.delete(package)
+					db.delete(package + "_pass")
+				} else {
+					$.print("Wrong password!")
+				}
+		}
+   else {
+		$.print("Package does not exist!")
+   }
+   }()
+  else: $.print("Invalid action!")
+}
+}
+
+let exports = {
+  action: run
+}
+
+return exports
